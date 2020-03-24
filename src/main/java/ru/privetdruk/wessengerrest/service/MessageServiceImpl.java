@@ -1,12 +1,14 @@
 package ru.privetdruk.wessengerrest.service;
 
 import org.springframework.beans.BeanUtils;
+import org.springframework.stereotype.Service;
 import ru.privetdruk.wessengerrest.domain.Message;
 import ru.privetdruk.wessengerrest.repository.MessageRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Service
 public class MessageServiceImpl implements MessageService {
     private final MessageRepository messageRepository;
 

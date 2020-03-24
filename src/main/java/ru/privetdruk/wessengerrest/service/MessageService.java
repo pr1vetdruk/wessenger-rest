@@ -5,7 +5,6 @@ import ru.privetdruk.wessengerrest.domain.Message;
 
 import java.util.List;
 
-@Service
 public interface MessageService {
     List<Message> findAll();
     Message save(Message message);
