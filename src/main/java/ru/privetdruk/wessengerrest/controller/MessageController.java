@@ -1,68 +1,45 @@
 package ru.privetdruk.wessengerrest.controller;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.web.bind.annotation.*;
-import ru.privetdruk.wessengerrest.exception.NotFoundException;
+import ru.privetdruk.wessengerrest.domain.Message;
+import ru.privetdruk.wessengerrest.domain.Views;
+import ru.privetdruk.wessengerrest.service.MessageService;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("message")
 public class MessageController {
-    private List<Map<String, String>> messages = new ArrayList<>() {{
-        add(new HashMap<>() {{
-            put("id", "1");
-            put("text", "First test message");
-        }});
-        add(new HashMap<>() {{
-            put("id", "2");
-            put("text", "Second test message");
-        }});
-        add(new HashMap<>() {{
-            put("id", "3");
-            put("text", "Third test message");
-        }});
-    }};
+    private final MessageService messageService;
+
+    public MessageController(MessageService messageService) {
+        this.messageService = messageService;
+    }
 
     @GetMapping
-    public List<Map<String, String>> messagesList() {
-        return messages;
+    @JsonView(Views.IdText.class)
+    public List<Message> messagesList() {
+        return messageService.findAll();
     }
 
     @GetMapping("{id}")
-    public Map<String, String> getOne(@PathVariable String id) {
-        return getMessage(id);
-    }
-
-    @PostMapping
-    public Map<String, String> create(@RequestBody Map<String, String> message) {
-        message.put("id", String.valueOf(messages.size() + 1));
-        messages.add(message);
+    public Message getOne(@PathVariable("id") Message message) {
         return message;
     }
 
+    @PostMapping
+    public Message create(@RequestBody Message message) {
+        return messageService.save(message);
+    }
+
     @PutMapping("{id}")
-    public Map<String, String> update(@PathVariable String id, @RequestBody Map<String, String> message) {
-        Map<String, String> sourceMessage = getMessage(id);
-
-        message.put("id", id);
-        sourceMessage.putAll(message);
-
-        return sourceMessage;
+    public Message update(@PathVariable("id") Message oldMessage, @RequestBody Message newMessage) {
+        return messageService.update(newMessage, oldMessage);
     }
 
     @DeleteMapping("{id}")
-    public void delete(@PathVariable String id) {
-        Map<String, String> message = getMessage(id);
-        messages.remove(message);
-    }
-
-    private Map<String, String> getMessage(String id) {
-        return messages.stream()
-                .filter(message -> message.get("id").equals(id))
-                .findFirst()
-                .orElseThrow(NotFoundException::new);
+    public void delete(@PathVariable("id") Message message) {
+        messageService.delete(message);
     }
 }
