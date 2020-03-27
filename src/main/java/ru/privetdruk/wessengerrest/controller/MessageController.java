@@ -1,6 +1,8 @@
 package ru.privetdruk.wessengerrest.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.web.bind.annotation.*;
 import ru.privetdruk.wessengerrest.domain.Message;
 import ru.privetdruk.wessengerrest.domain.Views;
@@ -41,5 +43,11 @@ public class MessageController {
     @DeleteMapping("{id}")
     public void delete(@PathVariable("id") Message message) {
         messageService.delete(message);
+    }
+
+    @MessageMapping("/changeMessage")
+    @SendTo("/topic/activity")
+    public Message change(Message message) {
+        return messageService.save(message);
     }
 }
