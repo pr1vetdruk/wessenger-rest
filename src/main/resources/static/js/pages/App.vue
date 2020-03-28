@@ -1,11 +1,20 @@
 <template>
-    <div>
-        <div v-if="!profile">Необходимо авторизоваться через <a href="/login">Google</a></div>
-        <div v-else>
-            <div>{{profile.name}}&nbsp;<a href="/logout">Выйти</a></div>
-            <messages-list :messages="messages"/>
-        </div>
-    </div>
+    <v-app>
+        <v-app-bar app>
+            <v-toolbar-title>Wessenger-REST</v-toolbar-title>
+
+            <v-spacer></v-spacer>
+
+            <v-btn icon href="/logout">
+                <v-icon>exit_to_app</v-icon>
+            </v-btn>
+            {{profile.name}}
+        </v-app-bar>
+        <v-content>
+            <div v-if="!profile">Необходимо авторизоваться через <a href="/login">Google</a></div>
+            <div><messages-list :messages="messages"/></div>
+        </v-content>
+    </v-app>
 </template>
 
 <script>
@@ -37,5 +46,4 @@
 </script>
 
 <style scoped>
-
 </style>
