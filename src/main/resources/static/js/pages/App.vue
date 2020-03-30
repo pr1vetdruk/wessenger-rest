@@ -5,22 +5,28 @@
 
             <v-spacer></v-spacer>
 
-            <v-btn icon href="/logout">
-                <v-icon>exit_to_app</v-icon>
-            </v-btn>
-            {{profile.name}}
+            <span v-if="profile">
+                {{profile.name}}
+                <v-btn icon href="/logout">
+                    <v-icon>exit_to_app</v-icon>
+                </v-btn>
+            </span>
         </v-app-bar>
         <v-content>
-            <div v-if="!profile">Необходимо авторизоваться через <a href="/login">Google</a></div>
-            <div><messages-list :messages="messages"/></div>
+            <v-container v-if="!profile">
+                Необходимо авторизоваться через <a href="/login">Google</a>
+            </v-container>
+            <v-container v-if="profile">
+                <messages-list :messages="messages"/>
+            </v-container>
         </v-content>
     </v-app>
 </template>
 
 <script>
     import MessagesList from "components/messages/MessageList.vue";
-    import { addHandler } from "util/ws";
-    import  { getIndex } from "util/collections";
+    import {addHandler} from "util/ws";
+    import {getIndex} from "util/collections";
 
     export default {
         components: {

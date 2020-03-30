@@ -1,6 +1,5 @@
 package ru.privetdruk.wessengerrest.service;
 
-import org.springframework.stereotype.Service;
 import ru.privetdruk.wessengerrest.domain.Message;
 
 import java.util.List;
