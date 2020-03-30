@@ -20,7 +20,7 @@ public class MessageController {
     }
 
     @GetMapping
-    @JsonView(Views.IdText.class)
+    @JsonView(Views.Message.IdText.class)
     public List<Message> messagesList() {
         return messageService.findAll();
     }
@@ -45,9 +45,9 @@ public class MessageController {
         messageService.delete(message);
     }
 
-    @MessageMapping("/changeMessage")
+    /*@MessageMapping("/changeMessage")
     @SendTo("/topic/activity")
     public Message change(Message message) {
         return messageService.save(message);
-    }
+    }*/
 }
