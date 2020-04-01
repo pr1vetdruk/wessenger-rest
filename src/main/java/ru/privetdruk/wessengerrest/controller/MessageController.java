@@ -1,13 +1,12 @@
 package ru.privetdruk.wessengerrest.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.web.bind.annotation.*;
 import ru.privetdruk.wessengerrest.domain.Message;
 import ru.privetdruk.wessengerrest.domain.Views;
 import ru.privetdruk.wessengerrest.service.MessageService;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -31,12 +30,12 @@ public class MessageController {
     }
 
     @PostMapping
-    public Message create(@RequestBody Message message) {
+    public Message create(@RequestBody Message message) throws IOException {
         return messageService.save(message);
     }
 
     @PutMapping("{id}")
-    public Message update(@PathVariable("id") Message oldMessage, @RequestBody Message newMessage) {
+    public Message update(@PathVariable("id") Message oldMessage, @RequestBody Message newMessage) throws IOException {
         return messageService.update(newMessage, oldMessage);
     }
 
@@ -45,9 +44,5 @@ public class MessageController {
         messageService.delete(message);
     }
 
-    /*@MessageMapping("/changeMessage")
-    @SendTo("/topic/activity")
-    public Message change(Message message) {
-        return messageService.save(message);
-    }*/
+
 }
