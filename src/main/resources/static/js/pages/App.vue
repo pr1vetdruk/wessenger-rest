@@ -2,15 +2,21 @@
     <v-app>
         <v-app-bar app>
             <v-toolbar-title>Wessenger-REST</v-toolbar-title>
-
+            <v-btn v-if="profile" text
+                   :disabled="$route.path === '/'"
+                   @click="showMessages">
+                Messages
+            </v-btn>
             <v-spacer></v-spacer>
 
-            <span v-if="profile">
+            <v-btn v-if="profile" text
+                   :disabled="$route.path === '/profile'"
+                   @click="showProfile">
                 {{profile.name}}
-                <v-btn icon href="/logout">
-                    <v-icon>exit_to_app</v-icon>
-                </v-btn>
-            </span>
+            </v-btn>
+            <v-btn v-if="profile" icon href="/logout">
+                <v-icon>exit_to_app</v-icon>
+            </v-btn>
         </v-app-bar>
         <v-content>
             <router-view></router-view>
@@ -24,7 +30,15 @@
 
     export default {
         computed: mapState(['profile']),
-        methods: mapMutations(['addMessageMutation', 'updateMessageMutation', 'removeMessageMutation']),
+        methods: {
+            ...mapMutations(['addMessageMutation', 'updateMessageMutation', 'removeMessageMutation']),
+            showMessages() {
+                this.$router.push('/');
+            },
+            showProfile() {
+                this.$router.push('/profile');
+            }
+        },
         created() {
             addHandler(data => {
                 if (data.objectType === 'MESSAGE') {
@@ -38,8 +52,8 @@
                         case 'REMOVE':
                             this.removeMessageMutation(data.body);
                             break;
-                            default:
-                                console.error('Looks like the event type if unknown "${data.eventType}"');
+                        default:
+                            console.error('Looks like the event type if unknown "${data.eventType}"');
                     }
                 } else {
                     console.error('Looks like the object type if unknown "${data.objectType}"');
