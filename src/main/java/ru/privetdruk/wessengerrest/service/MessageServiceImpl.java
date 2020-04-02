@@ -7,6 +7,7 @@ import org.jsoup.select.Elements;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import ru.privetdruk.wessengerrest.domain.Message;
+import ru.privetdruk.wessengerrest.domain.User;
 import ru.privetdruk.wessengerrest.domain.Views;
 import ru.privetdruk.wessengerrest.dto.EventType;
 import ru.privetdruk.wessengerrest.dto.MetaDto;
@@ -40,8 +41,9 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public Message save(Message message) throws IOException {
+    public Message create(Message message, User user) throws IOException {
         fillMeta(message);
+        message.setAuthor(user);
         message.setCreationDate(LocalDateTime.now());
         Message updatedMessage = messageRepository.save(message);
         webSocketSender.accept(EventType.CREATE, updatedMessage);

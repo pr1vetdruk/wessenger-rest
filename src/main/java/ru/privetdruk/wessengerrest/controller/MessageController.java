@@ -1,8 +1,10 @@
 package ru.privetdruk.wessengerrest.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import ru.privetdruk.wessengerrest.domain.Message;
+import ru.privetdruk.wessengerrest.domain.User;
 import ru.privetdruk.wessengerrest.domain.Views;
 import ru.privetdruk.wessengerrest.service.MessageService;
 
@@ -30,8 +32,8 @@ public class MessageController {
     }
 
     @PostMapping
-    public Message create(@RequestBody Message message) throws IOException {
-        return messageService.save(message);
+    public Message create(@RequestBody Message message, @AuthenticationPrincipal User user) throws IOException {
+        return messageService.create(message, user);
     }
 
     @PutMapping("{id}")
