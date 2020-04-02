@@ -1,15 +1,11 @@
 package ru.privetdruk.wessengerrest.domain;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
 
 @Entity
 @Table
-@Data
-@EqualsAndHashCode(of = {"id"})
 public class Comment {
     @Id
     @GeneratedValue
@@ -27,4 +23,51 @@ public class Comment {
     @JoinColumn(name = "user_id", nullable = false, updatable = false)
     @JsonView(Views.Message.Full.class)
     private User author;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public Message getMessage() {
+        return message;
+    }
+
+    public void setMessage(Message message) {
+        this.message = message;
+    }
+
+    public User getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(User author) {
+        this.author = author;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Comment comment = (Comment) o;
+
+        return id != null ? id.equals(comment.id) : comment.id == null;
+    }
+
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
+    }
 }

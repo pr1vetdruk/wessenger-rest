@@ -12,7 +12,6 @@ import java.util.List;
 @Entity
 @Table
 @ToString(of = {"id", "text"})
-@EqualsAndHashCode(of = {"id"})
 public class Message {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -114,5 +113,20 @@ public class Message {
 
     public void setLinkCover(String linkCover) {
         this.linkCover = linkCover;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Message message = (Message) o;
+
+        return id != null ? id.equals(message.id) : message.id == null;
+    }
+
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
     }
 }
