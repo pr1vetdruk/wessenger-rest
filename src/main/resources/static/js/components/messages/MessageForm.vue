@@ -1,6 +1,6 @@
 <template>
     <v-layout row>
-        <v-text-field label="New message" placeholder="Write text message" v-model="text"/>
+        <v-text-field label="New message" placeholder="Write text message" v-model="text" @keyup.enter="save"/>
         <v-btn @click="save">Save</v-btn>
     </v-layout>
 </template>
