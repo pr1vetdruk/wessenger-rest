@@ -40,6 +40,8 @@ public class IndexController {
 
             String messages = writer.writeValueAsString(messageService.findAll());
             model.addAttribute("messages", messages);
+        } else {
+            model.addAttribute("messages", "[]");
         }
 
         model.addAttribute("frontendData", data);

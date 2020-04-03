@@ -2,17 +2,17 @@
     <v-card class="my-2">
         <v-card-text primary-title>
             <div>
-                <v-avatar v-if="message.author && message.author.picture" size="36px">
+                <v-avatar v-if="message.author && message.author.picture" size="64px">
                     <img :src="message.author.picture" :alt="message.author.name"/>
                 </v-avatar>
 
-                <v-avatar v-else color="indigo" size="36px">
+                <v-avatar v-else color="indigo" size="64px">
                     <v-icon dark>mdi-account-circle</v-icon>
                 </v-avatar>
 
-                {{authorName}}
+                <span class="pl-3">{{authorName}}</span>
             </div>
-            <div>{{message.text}}</div>
+            <div class="pt-3">{{message.text}}</div>
         </v-card-text>
         <media v-if="message.link" :message="message"></media>
         <v-card-actions>

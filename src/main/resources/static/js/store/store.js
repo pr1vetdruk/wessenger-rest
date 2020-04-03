@@ -78,7 +78,7 @@ export default new Vuex.Store({
         async addCommentAction({commit, state}, comment) {
             const response = await commentApi.add(comment);
             const data = await response.json();
-            commit('addCommentMutation', comment);
+            commit('addCommentMutation', data);
         }
     }
 });

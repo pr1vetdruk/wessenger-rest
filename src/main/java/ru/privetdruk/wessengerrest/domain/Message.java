@@ -1,8 +1,6 @@
 package ru.privetdruk.wessengerrest.domain;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonView;
-import lombok.EqualsAndHashCode;
+import com.fasterxml.jackson.annotation.*;
 import lombok.ToString;
 
 import javax.persistence.*;
@@ -10,8 +8,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
-@Table
 @ToString(of = {"id", "text"})
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Message {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
