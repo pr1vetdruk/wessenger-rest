@@ -21,7 +21,7 @@ public class MessageController {
     }
 
     @GetMapping
-    @JsonView(Views.Message.IdText.class)
+    @JsonView(Views.IdText.class)
     public List<Message> messagesList() {
         return messageService.findAll();
     }

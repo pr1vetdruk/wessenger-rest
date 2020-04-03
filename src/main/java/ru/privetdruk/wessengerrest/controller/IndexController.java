@@ -28,7 +28,7 @@ public class IndexController {
         this.messageService = messageService;
         this.writer = mapper
                 .setConfig(mapper.getSerializationConfig())
-                .writerWithView(Views.Message.Full.class);
+                .writerWithView(Views.FullMessage.class);
     }
 
     @GetMapping

@@ -1,18 +1,18 @@
 package ru.privetdruk.wessengerrest.domain;
 
 public final class Views {
-    public interface Message {
-        interface Id {
-        }
-
-        interface Text {
-        }
-
-        interface IdText extends Id, Text {
-        }
-
-        interface Full extends IdText {
-        }
+    public interface Id {
     }
 
+    public interface Text {
+    }
+
+    public interface IdText extends Id, Text {
+    }
+
+    public interface FullMessage extends IdText {
+    }
+
+    public interface FullComment extends IdText {
+    }
 }

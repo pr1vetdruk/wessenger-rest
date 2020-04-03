@@ -15,32 +15,32 @@ import java.util.List;
 public class Message {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @JsonView(Views.Message.Id.class)
+    @JsonView(Views.Id.class)
     private Long id;
-    @JsonView(Views.Message.Text.class)
+    @JsonView(Views.Text.class)
     private String text;
 
     @Column(updatable = false)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy HH:mm:ss")
-    @JsonView(Views.Message.Full.class)
+    @JsonView(Views.FullMessage.class)
     private LocalDateTime creationDate;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    @JsonView(Views.Message.Full.class)
+    @JsonView(Views.FullMessage.class)
     private User author;
 
     @OneToMany(mappedBy = "message", orphanRemoval = true)
-    @JsonView(Views.Message.Full.class)
+    @JsonView(Views.FullMessage.class)
     private List<Comment> comments;
 
-    @JsonView(Views.Message.Full.class)
+    @JsonView(Views.FullMessage.class)
     private String link;
-    @JsonView(Views.Message.Full.class)
+    @JsonView(Views.FullMessage.class)
     private String linkTitle;
-    @JsonView(Views.Message.Full.class)
+    @JsonView(Views.FullMessage.class)
     private String linkDescription;
-    @JsonView(Views.Message.Full.class)
+    @JsonView(Views.FullMessage.class)
     private String linkCover;
 
     public Long getId() {

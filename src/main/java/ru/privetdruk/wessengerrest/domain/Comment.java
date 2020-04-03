@@ -9,19 +9,20 @@ import javax.persistence.*;
 public class Comment {
     @Id
     @GeneratedValue
-    @JsonView(Views.Message.Id.class)
+    @JsonView(Views.Id.class)
     private Long id;
 
-    @JsonView(Views.Message.Text.class)
+    @JsonView(Views.Text.class)
     private String text;
 
     @ManyToOne
     @JoinColumn(name = "message_id")
+    @JsonView(Views.FullComment.class)
     private Message message;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false, updatable = false)
-    @JsonView(Views.Message.Full.class)
+    @JsonView(Views.IdText.class)
     private User author;
 
     public Long getId() {

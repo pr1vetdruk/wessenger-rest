@@ -1,5 +1,5 @@
 package ru.privetdruk.wessengerrest.dto;
 
 public enum ObjectType {
-    MESSAGE
+    MESSAGE, COMMENT
 }

@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonRawValue;
 import com.fasterxml.jackson.annotation.JsonView;
 import ru.privetdruk.wessengerrest.domain.Views;
 
-@JsonView(Views.Message.Id.class)
+@JsonView(Views.Id.class)
 public class WebSocketEventDto {
     private ObjectType objectType;
     private EventType eventType;

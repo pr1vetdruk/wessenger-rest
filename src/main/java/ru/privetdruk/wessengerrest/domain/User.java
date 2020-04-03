@@ -13,11 +13,11 @@ import java.time.LocalDateTime;
 @Table(name = "usr")
 public class User implements Serializable {
     @Id
-    @JsonView(Views.Message.Id.class)
+    @JsonView(Views.Id.class)
     private String id;
-    @JsonView(Views.Message.Text.class)
+    @JsonView(Views.Text.class)
     private String name;
-    @JsonView(Views.Message.Text.class)
+    @JsonView(Views.Text.class)
     private String picture;
     private String email;
     private String gender;

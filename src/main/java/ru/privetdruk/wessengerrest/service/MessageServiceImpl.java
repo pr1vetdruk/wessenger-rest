@@ -32,7 +32,7 @@ public class MessageServiceImpl implements MessageService {
 
     public MessageServiceImpl(MessageRepository messageRepository, WebSocketSender webSocketSender) {
         this.messageRepository = messageRepository;
-        this.webSocketSender = webSocketSender.getSender(ObjectType.MESSAGE, Views.Message.IdText.class);
+        this.webSocketSender = webSocketSender.getSender(ObjectType.MESSAGE, Views.IdText.class);
     }
 
     @Override
