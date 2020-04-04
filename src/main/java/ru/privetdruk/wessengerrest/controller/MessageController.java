@@ -1,15 +1,18 @@
 package ru.privetdruk.wessengerrest.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import ru.privetdruk.wessengerrest.domain.Message;
 import ru.privetdruk.wessengerrest.domain.User;
 import ru.privetdruk.wessengerrest.domain.Views;
+import ru.privetdruk.wessengerrest.dto.MessagePageDto;
 import ru.privetdruk.wessengerrest.service.MessageService;
 
 import java.io.IOException;
-import java.util.List;
 
 @RestController
 @RequestMapping("message")
@@ -21,9 +24,9 @@ public class MessageController {
     }
 
     @GetMapping
-    @JsonView(Views.IdText.class)
-    public List<Message> messagesList() {
-        return messageService.findAll();
+    @JsonView(Views.FullMessage.class)
+    public MessagePageDto messagesList(@PageableDefault(size = MessageService.MESSAGES_PER_PAGE, sort = {"id"}, direction = Sort.Direction.DESC) Pageable pageable) {
+        return messageService.findAll(pageable);
     }
 
     @GetMapping("{id}")

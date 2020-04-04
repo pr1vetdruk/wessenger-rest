@@ -5,11 +5,14 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ru.privetdruk.wessengerrest.domain.Message;
 import ru.privetdruk.wessengerrest.domain.User;
 import ru.privetdruk.wessengerrest.domain.Views;
 import ru.privetdruk.wessengerrest.dto.EventType;
+import ru.privetdruk.wessengerrest.dto.MessagePageDto;
 import ru.privetdruk.wessengerrest.dto.MetaDto;
 import ru.privetdruk.wessengerrest.dto.ObjectType;
 import ru.privetdruk.wessengerrest.repository.MessageRepository;
@@ -17,7 +20,6 @@ import ru.privetdruk.wessengerrest.util.WebSocketSender;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -36,8 +38,9 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public List<Message> findAll() {
-        return messageRepository.findAll();
+    public MessagePageDto findAll(Pageable pageable) {
+        Page<Message> page = messageRepository.findAll(pageable);
+        return new MessagePageDto(page.getContent(), pageable.getPageNumber(), page.getTotalPages());
     }
 
     @Override
