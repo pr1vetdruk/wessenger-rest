@@ -15,4 +15,8 @@ public final class Views {
 
     public interface FullComment extends IdText {
     }
+
+    public interface FullProfile extends IdText
+    {
+    }
 }
