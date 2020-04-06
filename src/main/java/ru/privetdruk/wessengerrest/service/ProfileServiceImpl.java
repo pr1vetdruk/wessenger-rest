@@ -24,6 +24,11 @@ public class ProfileServiceImpl implements ProfileService {
             subscribers.add(subscriber);
         }
 
-        return userDetailsRepository.save(channel );
+        return userDetailsRepository.save(channel);
+    }
+
+    @Override
+    public User findUserById(String id) {
+        return userDetailsRepository.findById(id).orElse(null);
     }
 }

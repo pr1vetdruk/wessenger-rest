@@ -15,6 +15,7 @@ import ru.privetdruk.wessengerrest.domain.User;
 import ru.privetdruk.wessengerrest.domain.Views;
 import ru.privetdruk.wessengerrest.dto.MessagePageDto;
 import ru.privetdruk.wessengerrest.service.MessageService;
+import ru.privetdruk.wessengerrest.service.ProfileService;
 
 import java.util.HashMap;
 
@@ -22,16 +23,20 @@ import java.util.HashMap;
 @RequestMapping("/")
 public class IndexController {
     private final MessageService messageService;
-    private final ObjectWriter writer;
+    private final ProfileService profileService;
+    private final ObjectWriter messageWriter;
+    private final ObjectWriter profileWriter;
 
     @Value("${spring.profiles.active}")
     private String profile;
 
-    public IndexController(MessageService messageService, ObjectMapper mapper) {
+    public IndexController(MessageService messageService, ObjectMapper mapper, ProfileService profileService) {
         this.messageService = messageService;
-        this.writer = mapper
-                .setConfig(mapper.getSerializationConfig())
-                .writerWithView(Views.FullMessage.class);
+        this.profileService = profileService;
+
+        ObjectMapper config = mapper.setConfig(mapper.getSerializationConfig());
+        this.messageWriter = config.writerWithView(Views.FullMessage.class);
+        this.profileWriter = config.writerWithView(Views.FullProfile.class);
     }
 
     @GetMapping
@@ -39,19 +44,22 @@ public class IndexController {
         HashMap<Object, Object> data = new HashMap<>();
 
         if (user != null) {
-            data.put("profile", user);
+            User userFromDb = profileService.findUserById(user.getId());
+            String serializedProfile = profileWriter.writeValueAsString(userFromDb);
+            model.addAttribute("profile", serializedProfile);
 
             Sort sort = Sort.by(Sort.Direction.DESC, "id");
             PageRequest pageRequest = PageRequest.of(0, MessageService.MESSAGES_PER_PAGE, sort);
             MessagePageDto messagePageDto = messageService.findAll(pageRequest);
 
-            String messages = writer.writeValueAsString(messagePageDto.getMessages());
+            String serializedMessages = messageWriter.writeValueAsString(messagePageDto.getMessages());
 
-            model.addAttribute("messages", messages);
+            model.addAttribute("messages", serializedMessages);
             data.put("currentPage", messagePageDto.getCurrentPage());
             data.put("totalPages", messagePageDto.getTotalPages());
         } else {
-            model.addAttribute("messages", "[]");
+            model.addAttribute("messages", null);
+            model.addAttribute("profile", null);
         }
 
         model.addAttribute("frontendData", data);
