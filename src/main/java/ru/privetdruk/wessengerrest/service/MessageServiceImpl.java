@@ -10,19 +10,23 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ru.privetdruk.wessengerrest.domain.Message;
 import ru.privetdruk.wessengerrest.domain.User;
+import ru.privetdruk.wessengerrest.domain.UserSubscription;
 import ru.privetdruk.wessengerrest.domain.Views;
 import ru.privetdruk.wessengerrest.dto.EventType;
 import ru.privetdruk.wessengerrest.dto.MessagePageDto;
 import ru.privetdruk.wessengerrest.dto.MetaDto;
 import ru.privetdruk.wessengerrest.dto.ObjectType;
 import ru.privetdruk.wessengerrest.repository.MessageRepository;
+import ru.privetdruk.wessengerrest.repository.UserSubscriptionRepository;
 import ru.privetdruk.wessengerrest.util.WebSocketSender;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 @Service
 public class MessageServiceImpl implements MessageService {
@@ -30,17 +34,13 @@ public class MessageServiceImpl implements MessageService {
     private static final Pattern IMG_REGEX = Pattern.compile("\\.(jpeg|jpg|gif|png)$", Pattern.CASE_INSENSITIVE);
 
     private final MessageRepository messageRepository;
+    private final UserSubscriptionRepository subscriptionRepository;
     private final BiConsumer<EventType, Message> webSocketSender;
 
-    public MessageServiceImpl(MessageRepository messageRepository, WebSocketSender webSocketSender) {
+    public MessageServiceImpl(MessageRepository messageRepository, UserSubscriptionRepository subscriptionRepository, WebSocketSender webSocketSender) {
         this.messageRepository = messageRepository;
+        this.subscriptionRepository = subscriptionRepository;
         this.webSocketSender = webSocketSender.getSender(ObjectType.MESSAGE, Views.IdText.class);
-    }
-
-    @Override
-    public MessagePageDto findAll(Pageable pageable) {
-        Page<Message> page = messageRepository.findAll(pageable);
-        return new MessagePageDto(page.getContent(), pageable.getPageNumber(), page.getTotalPages());
     }
 
     @Override
@@ -66,6 +66,20 @@ public class MessageServiceImpl implements MessageService {
     public void delete(Message message) {
         messageRepository.delete(message);
         webSocketSender.accept(EventType.REMOVE, message);
+    }
+
+    @Override
+    public MessagePageDto findForUser(User user, Pageable pageable) {
+        List<User> channels = subscriptionRepository.findBySubscriber(user)
+                .stream()
+                .map(UserSubscription::getChannel)
+                .collect(Collectors.toList());
+
+        channels.add(user);
+
+        Page<Message> page = messageRepository.findByAuthorIn(channels, pageable);
+
+        return new MessagePageDto(page.getContent(), pageable.getPageNumber(), page.getTotalPages());
     }
 
     private void fillMeta(Message message) throws IOException {

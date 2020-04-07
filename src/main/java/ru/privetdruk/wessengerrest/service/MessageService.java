@@ -10,7 +10,7 @@ import java.io.IOException;
 public interface MessageService {
     int MESSAGES_PER_PAGE = 3;
 
-    MessagePageDto findAll(Pageable pageable);
+    MessagePageDto findForUser(User user, Pageable pageable);
     Message create(Message message, User user) throws IOException;
     Message update(Message newMessage, Message oldMessage) throws IOException;
     void delete(Message message);

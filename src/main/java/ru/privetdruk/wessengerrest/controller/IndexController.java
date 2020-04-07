@@ -50,7 +50,7 @@ public class IndexController {
 
             Sort sort = Sort.by(Sort.Direction.DESC, "id");
             PageRequest pageRequest = PageRequest.of(0, MessageService.MESSAGES_PER_PAGE, sort);
-            MessagePageDto messagePageDto = messageService.findAll(pageRequest);
+            MessagePageDto messagePageDto = messageService.findForUser(user, pageRequest);
 
             String serializedMessages = messageWriter.writeValueAsString(messagePageDto.getMessages());
 
