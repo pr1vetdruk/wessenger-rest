@@ -72,6 +72,7 @@ public class MessageServiceImpl implements MessageService {
     public MessagePageDto findForUser(User user, Pageable pageable) {
         List<User> channels = subscriptionRepository.findBySubscriber(user)
                 .stream()
+                .filter(UserSubscription::isActive)
                 .map(UserSubscription::getChannel)
                 .collect(Collectors.toList());
 
