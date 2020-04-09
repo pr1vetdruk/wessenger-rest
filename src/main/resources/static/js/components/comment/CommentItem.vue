@@ -1,14 +1,17 @@
 <template>
-    <v-list-item>
-        <user-link :user="comment.author"></user-link>
-        <v-list-item-content>
-            <v-list-item-title>{{comment.text}}</v-list-item-title>
-        </v-list-item-content>
-    </v-list-item>
+    <v-list>
+        <v-list-item>
+            <user-link :user="comment.author"></user-link>
+            <v-list-item-content>
+                <v-list-item-title>{{comment.text}}</v-list-item-title>
+            </v-list-item-content>
+        </v-list-item>
+    </v-list>
 </template>
 
 <script>
-    import UserLink from "../UserLink.vue";
+    import UserLink from "components/UserLink.vue";
+
     export default {
         name: "CommentItem",
         components: {UserLink},
