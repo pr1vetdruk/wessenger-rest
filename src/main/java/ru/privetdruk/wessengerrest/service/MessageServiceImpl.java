@@ -4,7 +4,6 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -40,7 +39,7 @@ public class MessageServiceImpl implements MessageService {
     public MessageServiceImpl(MessageRepository messageRepository, UserSubscriptionRepository subscriptionRepository, WebSocketSender webSocketSender) {
         this.messageRepository = messageRepository;
         this.subscriptionRepository = subscriptionRepository;
-        this.webSocketSender = webSocketSender.getSender(ObjectType.MESSAGE, Views.IdText.class);
+        this.webSocketSender = webSocketSender.getSender(ObjectType.MESSAGE, Views.FullMessage.class);
     }
 
     @Override
@@ -55,7 +54,7 @@ public class MessageServiceImpl implements MessageService {
 
     @Override
     public Message update(Message newMessage, Message oldMessage) throws IOException {
-        BeanUtils.copyProperties(newMessage, oldMessage, "id");
+        oldMessage.setText(newMessage.getText());
         fillMeta(oldMessage);
         Message updatedMessage = messageRepository.save(oldMessage);
         webSocketSender.accept(EventType.UPDATE, updatedMessage);

@@ -37,11 +37,13 @@ public class MessageController {
     }
 
     @PostMapping
+    @JsonView(Views.FullMessage.class)
     public Message create(@RequestBody Message message, @AuthenticationPrincipal User user) throws IOException {
         return messageService.create(message, user);
     }
 
     @PutMapping("{id}")
+    @JsonView(Views.FullMessage.class)
     public Message update(@PathVariable("id") Message oldMessage, @RequestBody Message newMessage) throws IOException {
         return messageService.update(newMessage, oldMessage);
     }

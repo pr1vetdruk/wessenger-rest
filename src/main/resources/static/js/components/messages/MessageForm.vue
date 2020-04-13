@@ -12,7 +12,7 @@
         props: ['message'],
         data() {
             return {
-                id: '',
+                id: null,
                 text: ''
             }
         },
@@ -36,7 +36,7 @@
                     this.addMessageAction(message);
                 }
 
-                this.id = '';
+                this.id = null;
                 this.text = '';
             }
         }
