@@ -6,6 +6,7 @@
 </template>
 
 <script>
+    import * as Sentry from '@sentry/browser';
     import {mapActions} from 'vuex';
 
     export default {
