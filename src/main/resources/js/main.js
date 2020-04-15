@@ -5,7 +5,7 @@ import 'api/resource';
 import router from 'router/router';
 import App from 'pages/App.vue';
 import store from 'store/store';
-import {connect} from './util/ws';
+import {connect} from 'util/ws';
 import 'vuetify/dist/vuetify.min.css';
 import * as Sentry from '@sentry/browser';
 import * as Integrations from '@sentry/integrations';

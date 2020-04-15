@@ -27,7 +27,7 @@ public class IndexController {
     private final ObjectWriter messageWriter;
     private final ObjectWriter profileWriter;
 
-    @Value("${spring.profiles.active}")
+    @Value("${spring.profiles.active:prod}")
     private String profile;
 
     public IndexController(MessageService messageService, ObjectMapper mapper, ProfileService profileService) {
